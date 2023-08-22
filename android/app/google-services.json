@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "698544482046",
+    "project_id": "myhealth-392417",
+    "storage_bucket": "myhealth-392417.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:698544482046:android:8ca49497c1863284fd67af",
+        "android_client_info": {
+          "package_name": "com.blemanagerapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "698544482046-ogfl3ki7qavdtdtt2pofhr83hinnofhg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.blemanagerapp",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "698544482046-1erg7kp7fc9f8ic03fin3gk5ripga8er.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6HI0FGFc6ZWRNSIiPy0CtVl8JIBstNFw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "698544482046-1erg7kp7fc9f8ic03fin3gk5ripga8er.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

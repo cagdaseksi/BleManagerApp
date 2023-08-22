@@ -5029,6 +5029,11 @@ mkdirp@^0.5.1:
   dependencies:
     minimist "^1.2.6"
 
+moment@^2.29.2:
+  version "2.29.4"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.4.tgz#3dbe052889fe7c1b2ed966fcb3a77328964ef108"
+  integrity sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==
+
 ms@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
@@ -5640,6 +5645,13 @@ react-native-codegen@^0.70.6:
     flow-parser "^0.121.0"
     jscodeshift "^0.13.1"
     nullthrows "^1.1.1"
+
+react-native-google-fit@^0.19.1:
+  version "0.19.1"
+  resolved "https://registry.yarnpkg.com/react-native-google-fit/-/react-native-google-fit-0.19.1.tgz#1728b51d4e0748fa8c77562f70188b0fc3f819b8"
+  integrity sha512-vRhzPB9nZXkKnCDy0e5Ibn5s0AKQhVVQBvNHZuNBQlnNMqIYhSo6GieymPgSTWuWmew/PnFx7VnuHbeeKnX+zQ==
+  dependencies:
+    moment "^2.29.2"
 
 react-native-gradle-plugin@^0.70.3:
   version "0.70.3"
