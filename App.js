@@ -8,6 +8,7 @@ import {
   Alert,
   Dimensions,
 } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 
 const App = () => {
   const quizData = require('./src/assets/quizData.json');
@@ -68,7 +69,9 @@ const App = () => {
   const imageWidth = screenWidth - 40;
 
   return (
-    <View style={styles.container}>
+    <LinearGradient
+      colors={['#F29727', '#F29727', '#F29727']}
+      style={styles.container}>
       <Text style={styles.heading}>Fast Learn English</Text>
       <Text style={styles.counterText}>{`${currentQuestion + 1} / ${
         quizData.questions.length
@@ -105,6 +108,9 @@ const App = () => {
           disabled={currentQuestion === 0}>
           <Text style={styles.controlButtonText}>Previous</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={styles.resetButton} onPress={handleReset}>
+          <Text style={styles.resetButtonText}>Reset</Text>
+        </TouchableOpacity>
         {currentQuestion + 1 < quizData.questions.length ? (
           <TouchableOpacity style={styles.controlButton} onPress={handleNext}>
             <Text style={styles.controlButtonText}>Next</Text>
@@ -114,11 +120,8 @@ const App = () => {
             <Text style={styles.controlButtonText}>Finish</Text>
           </TouchableOpacity>
         )}
-        <TouchableOpacity style={styles.resetButton} onPress={handleReset}>
-          <Text style={styles.resetButtonText}>Reset</Text>
-        </TouchableOpacity>
       </View>
-    </View>
+    </LinearGradient>
   );
 };
 
@@ -134,19 +137,25 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     marginTop: 0,
+    color: '#FFFFFF',
   },
   image: {
     height: 200,
     marginBottom: 20,
   },
   questionText: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 20,
+    fontWeight: '600',
     marginBottom: 20,
+    backgroundColor: '#22A699',
+    borderRadius: 10,
+    padding: 5,
+    textAlign: 'center',
+    color: '#FFFFFF',
   },
   answerButton: {
     width: '100%',
-    backgroundColor: 'lightgray',
+    backgroundColor: '#FFBF00',
     paddingVertical: 10,
     paddingHorizontal: 20,
     marginBottom: 10,
@@ -158,6 +167,7 @@ const styles = StyleSheet.create({
   answerButtonText: {
     fontSize: 16,
     fontWeight: 'bold',
+    color: '#4A4A4A',
   },
   counterText: {
     fontSize: 14,
@@ -170,32 +180,34 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   controlButton: {
-    backgroundColor: 'blue',
+    backgroundColor: '#22A699',
     paddingVertical: 10,
     paddingHorizontal: 20,
     marginBottom: 10,
     borderRadius: 5,
   },
   controlButtonText: {
-    color: 'white',
+    color: '#FFFFFF',
     fontWeight: 'bold',
   },
   resetButton: {
-    backgroundColor: 'red',
+    backgroundColor: '#F24C3D',
     paddingVertical: 10,
     paddingHorizontal: 20,
     marginBottom: 10,
     borderRadius: 5,
   },
   resetButtonText: {
-    color: 'white',
+    color: '#FFFFFF',
     fontWeight: 'bold',
   },
   correctAnswer: {
-    backgroundColor: 'green',
+    backgroundColor: '#22A699',
+    color: '#FFFFFF',
   },
   wrongAnswer: {
-    backgroundColor: 'red',
+    backgroundColor: '#F24C3D',
+    color: '#FFFFFF',
   },
 });
 
