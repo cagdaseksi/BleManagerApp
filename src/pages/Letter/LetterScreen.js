@@ -24,10 +24,13 @@ const getExtraLetters = (word, count) => {
   return extraLetters;
 };
 
-const AppLetter = () => {
+const LetterScreen = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedLetters, setSelectedLetters] = useState('');
-  const [showFeedback, setShowFeedback] = useState(false);
+  const [quizFinished, setQuizFinished] = useState(false);
+  const [shuffledLetters, setShuffledLetters] = useState([]);
+  const [clickedLetterIndex, setClickedLetterIndex] = useState(null);
+
   const [userAnswers, setUserAnswers] = useState(
     Array(targetWord.length).fill(''),
   );
@@ -36,38 +39,19 @@ const AppLetter = () => {
   const extraLetters = getExtraLetters(currentTargetWord, 3);
   const correctLettersCount = currentTargetWord.length;
 
-  const shuffledLetters = currentTargetWord
-    .split('')
-    .concat(extraLetters)
-    .sort(() => Math.random() - 0.5);
+  useEffect(() => {
+    const extraLetters = getExtraLetters(currentTargetWord, 3);
+    const shuffled = currentTargetWord
+      .split('')
+      .concat(extraLetters)
+      .sort(() => Math.random() - 0.5);
+    setShuffledLetters(shuffled);
+  }, [currentTargetWord]);
 
   useEffect(() => {
     const initialSelectedLetters = Array(correctLettersCount).fill('');
     setSelectedLetters(initialSelectedLetters.join(''));
   }, [currentQuestion]);
-
-  const handleLetterClick = letter => {
-    setSelectedLetters(selectedLetters + letter);
-  };
-
-  const handleClearClick = () => {
-    setSelectedLetters('');
-  };
-
-  const handleNextClick = () => {
-    setShowFeedback(false);
-    const isCorrect = selectedLetters === currentTargetWord;
-    const updatedAnswers = [...userAnswers];
-    updatedAnswers[currentQuestion] = isCorrect ? 'correct' : 'wrong';
-    setUserAnswers(updatedAnswers);
-
-    setTimeout(() => {
-      if (selectedLetters.length === correctLettersCount) {
-        setCurrentQuestion(currentQuestion + 1);
-        setSelectedLetters('');
-      }
-    }, 1000);
-  };
 
   useEffect(() => {
     if (currentQuestion === targetWord.length) {
@@ -75,6 +59,73 @@ const AppLetter = () => {
       console.log('Quiz Finished', userAnswers);
     }
   }, [currentQuestion, userAnswers]);
+
+  const handleLetterClick = letter => {
+    if (selectedLetters.length < currentTargetWord.length) {
+      const currentIndex = selectedLetters.length;
+
+      if (currentTargetWord[currentIndex] === letter) {
+        const updatedLetters = selectedLetters + letter;
+        setSelectedLetters(updatedLetters);
+
+        const letterIndex = shuffledLetters.indexOf(letter);
+        setClickedLetterIndex(letterIndex); // Set the clicked letter index
+
+        // After a short duration, reset the clickedLetterIndex
+        setTimeout(() => {
+          setClickedLetterIndex(null);
+        }, 300);
+
+        if (updatedLetters.length === currentTargetWord.length) {
+          if (currentQuestion === targetWord.length - 1) {
+            // Check if it's the last question
+            setQuizFinished(true); // Set quiz to finished
+          } else {
+            setTimeout(() => {
+              setCurrentQuestion(prevQuestion => prevQuestion + 1);
+              setSelectedLetters('');
+            }, 1000);
+          }
+        }
+      }
+    }
+  };
+
+  const handleClearClick = () => {
+    setSelectedLetters('');
+  };
+
+  const handleNextClick = () => {
+    if (currentQuestion < targetWord.length - 1) {
+      setCurrentQuestion(prevQuestion => prevQuestion + 1);
+    }
+  };
+
+  const handlePrevClick = () => {
+    if (currentQuestion > 0) {
+      setCurrentQuestion(prevQuestion => prevQuestion - 1);
+    }
+  };
+
+  const handleFinishClick = () => {
+    setQuizFinished(true);
+  };
+
+  const handleReset = () => {
+    setCurrentQuestion(0);
+    setSelectedLetters('');
+  };
+
+  if (quizFinished) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.resultText}>Quiz Finished!</Text>
+        <TouchableOpacity style={styles.restartButton} onPress={handleReset}>
+          <Text>Restart Quiz</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
 
   return (
     <LinearGradient
@@ -97,27 +148,37 @@ const AppLetter = () => {
             key={index}
             style={[
               styles.letterButton,
-              showFeedback && currentTargetWord.includes(letter)
-                ? selectedLetters.includes(letter)
-                  ? styles.correctButton
-                  : styles.wrongButton
-                : '',
+              clickedLetterIndex === index ? styles.correctButton : null,
             ]}
-            onPress={() => handleLetterClick(letter)}
-            disabled={showFeedback}>
+            onPress={() => handleLetterClick(letter)}>
             <Text style={styles.letterText}>{letter}</Text>
           </TouchableOpacity>
         ))}
       </View>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={handleClearClick}>
-          <Text>Clear</Text>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={handlePrevClick}
+          disabled={currentQuestion === 0}>
+          <Text>Prev</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.button}
           onPress={handleNextClick}
-          disabled={!selectedLetters}>
+          disabled={currentQuestion === targetWord.length - 1}>
           <Text>Next</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={handleFinishClick}>
+          <Text>Finish</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.button} onPress={handleClearClick}>
+          <Text>Clear</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.button} onPress={handleReset}>
+          <Text>Reset</Text>
         </TouchableOpacity>
       </View>
     </LinearGradient>
@@ -201,6 +262,19 @@ const styles = StyleSheet.create({
     backgroundColor: '#22A699',
     color: '#FFFFFF',
   },
+  resultText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    color: '#FFFFFF',
+  },
+  restartButton: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    backgroundColor: 'blue',
+    borderRadius: 10,
+    marginHorizontal: 10,
+  },
 });
 
-export default AppLetter;
+export default LetterScreen;
